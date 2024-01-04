@@ -1,9 +1,17 @@
 let mathPairs = [];
 let openCard = [];
+let count = 8;
+
+
+const gameWindows = document.getElementById("game__windows");
+
+if (count > 8) {
+    gameWindows.classList.add("media__grid");
+}
 
 function createNumbersArray() {
     let pair = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= count; i++) {
         pair.push(i);
         pair.push(i);
     }
@@ -62,7 +70,7 @@ function checkForMatch () {
 
             if (number_one === number_two) {
                 mathPairs.push(number_one);
-                if (mathPairs.length === 10) {
+                if (mathPairs.length === count) {
                     // The End
                     alert('You WIN')
                 }
@@ -82,7 +90,12 @@ function resetGame() {
     mathPairs = [];
 }
 
-function startGame(count) {
+function startGame() {
+    const countInput = document.getElementById("count-input");
+    let inputValue = parseInt(countInput.value);
+
+    count = inputValue;
+
     resetGame();
     const pairArray = createNumbersArray();
     const shuffledArray = shuffle(pairArray);
@@ -90,3 +103,5 @@ function startGame(count) {
 }
 
 startGame();
+
+

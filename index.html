@@ -17,8 +17,12 @@
 </head>
 
 <body>
-    <main class="container game__window">
-        <div id="card-container" class="row gap-3"></div>
+    <main class="container game__window" id="game__windows">
+        <div class="user__level">
+            <button onclick="startGame()" type="number" id="count-input" value="8">Level: 1</button>
+        </div>
+        
+        <div id="card-container" class="row gap-5"></div>
     </main>
     
 </body>
