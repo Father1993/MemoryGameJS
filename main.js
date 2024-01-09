@@ -1,15 +1,25 @@
 let mathPairs = [];
 let openCard = [];
+let timer = 60;
 let count = 8;
+let gameStarted = false;
+let timerTimeout;
 
+
+const updateTimer = () => {
+    timer--;
+    timerDisplay.textContent = timer;
+
+    if (timer <= 0) {
+        endGame();
+    } else {
+        setTimeout(updateTimer, 1000);
+    }
+};
 
 const gameWindows = document.getElementById("game__windows");
 
-if (count > 8) {
-    gameWindows.classList.add("media__grid");
-}
-
-function createNumbersArray() {
+function createNumbersArray(count) {
     let pair = [];
     for (let i = 1; i <= count; i++) {
         pair.push(i);
@@ -32,11 +42,11 @@ function createCardElements(pairArray) {
 
     pairArray.forEach((number) => {
         const card = document.createElement("div");
-        const flipper = document.createElement("div");
         const cardFront = document.createElement("div");
         const cardBack = document.createElement("div");
 
         card.classList.add("card");
+        card.classList.add("col-md-6")
         cardFront.classList.add("card-front");
         cardBack.classList.add("card-back");
 
@@ -62,6 +72,7 @@ function createCardElements(pairArray) {
 }
 
 function checkForMatch () {
+    
             const card_one = openCard[0];
             const card_two = openCard[1];
 
@@ -72,7 +83,11 @@ function checkForMatch () {
                 mathPairs.push(number_one);
                 if (mathPairs.length === count) {
                     // The End
-                    alert('You WIN')
+                    alert('You WIN!');
+                    const cardContainer = document.getElementById("card-container");
+                    cardContainer.innerHTML = "";
+                    stopTimer();
+                    gameStarted = false;
                 }
             } else {
                 // timeout
@@ -81,27 +96,44 @@ function checkForMatch () {
                     card_two.classList.remove('check');
                 }, 1000);
             }
-
             openCard = [];
         }
+
+function startTimer() {
+    const timerDisplay = document.getElementById("timer-display");
+    timerDisplay.textContent = timer;
+
+    
+    updateTimer();
+}
+
+function stopTimer () {
+    clearTimeout(timerTimeout);
+}
+
+function endGame () {
+    gameStarted = false;
+    alert("Время вышло! Игра завершена!")
+}
 
 function resetGame() {
     openCard = [];
     mathPairs = [];
+    timer = 60;
 }
 
 function startGame() {
-    const countInput = document.getElementById("count-input");
-    let inputValue = parseInt(countInput.value);
+    if (gameStarted) {
+        return;
+    }
 
-    count = inputValue;
+    gameStarted = true;
 
     resetGame();
-    const pairArray = createNumbersArray();
+    const pairArray = createNumbersArray(8);
     const shuffledArray = shuffle(pairArray);
+    const cardContainer = document.getElementById("card-container");
+    cardContainer.innerHTML = "";
     createCardElements(shuffledArray);
+    startTimer();
 }
-
-startGame();
-
-
