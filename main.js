@@ -5,6 +5,10 @@ let count = 8;
 let gameStarted = false;
 let timerTimeout;
 
+const gameWindows = document.getElementById("game__windows");
+const level_1 = document.getElementById("level-1");
+const level_2 = document.getElementById("level-2");
+const level_3 = document.getElementById("level-3");
 
 const updateTimer = () => {
     timer--;
@@ -17,7 +21,6 @@ const updateTimer = () => {
     }
 };
 
-const gameWindows = document.getElementById("game__windows");
 
 function createNumbersArray(count) {
     let pair = [];
@@ -122,7 +125,7 @@ function resetGame() {
     timer = 60;
 }
 
-function startGame() {
+function startGame(count) {
     if (gameStarted) {
         return;
     }
@@ -130,10 +133,24 @@ function startGame() {
     gameStarted = true;
 
     resetGame();
-    const pairArray = createNumbersArray(8);
+    const pairArray = createNumbersArray(count);
     const shuffledArray = shuffle(pairArray);
     const cardContainer = document.getElementById("card-container");
     cardContainer.innerHTML = "";
     createCardElements(shuffledArray);
     startTimer();
 }
+
+
+
+level_1.addEventListener("click", () => {
+    startGame(8);
+});
+
+level_2.addEventListener("click", () => {
+    startGame(16);
+});
+
+level_3.addEventListener("click", () => {
+    startGame(24);
+});
