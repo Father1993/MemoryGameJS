@@ -6,6 +6,9 @@ let gameStarted = false;
 let timerTimeout;
 
 const gameWindows = document.getElementById("game__windows");
+
+const timerDisplay = document.getElementById("timer-display");
+
 const level_1 = document.getElementById("level-1");
 const level_2 = document.getElementById("level-2");
 const level_3 = document.getElementById("level-3");
@@ -103,23 +106,25 @@ function checkForMatch () {
         }
 
 function startTimer() {
-    const timerDisplay = document.getElementById("timer-display");
     timerDisplay.textContent = timer;
-
-    
+    timerTimeout = setTimeout(updateTimer, 1000);
     updateTimer();
 }
 
 function stopTimer () {
+    timerTimeout = null;
     clearTimeout(timerTimeout);
 }
 
 function endGame () {
     gameStarted = false;
-    alert("Время вышло! Игра завершена!")
+    stopTimer();
+    timerDisplay.innerHTML = "0";
+    alert("Время вышло! Игра завершена!");
 }
 
 function resetGame() {
+    stopTimer();
     openCard = [];
     mathPairs = [];
     timer = 60;
@@ -142,15 +147,21 @@ function startGame(count) {
 }
 
 
-
 level_1.addEventListener("click", () => {
+    resetGame();
     startGame(8);
 });
 
 level_2.addEventListener("click", () => {
-    startGame(16);
+    resetGame();
+    const cardContainer = document.getElementById("game__windows");
+    cardContainer.style.width = "696px"; 
+    startGame(10);
 });
 
 level_3.addEventListener("click", () => {
-    startGame(24);
+    resetGame();
+    const cardContainer = document.getElementById("game__windows");
+    cardContainer.style.width = "1020px"; 
+    startGame(14);
 });
